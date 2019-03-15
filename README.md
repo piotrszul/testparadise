@@ -24,3 +24,4 @@ CYPHER QUERIES
 # Flash rest: 
 
 - https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
+- http://flask.pocoo.org/docs/1.0/tutorial/tests/
