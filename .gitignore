@@ -2,3 +2,9 @@
 target
 tmp
 *.pyc
+.cache-main
+.cache-test
+.classpath
+.project
+.settings
+paradisewebapp/bin

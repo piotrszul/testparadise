@@ -34,7 +34,7 @@ def get_node(node_id):
 @app.route('/shortestPath/<int:start_id>/<int:end_id>',methods=['GET'])
 def shortest_path(start_id, end_id):
     with driver.session() as session:
-        result = session.run('MATCH path=shortestPath((b)-[*]-(e)) WHERE ID(b)=$start_id AND ID(e)=$end_id RETURN path', 
+        result = session.run('MATCH path=shortestPath((b)-[*]->(e)) WHERE ID(b)=$start_id AND ID(e)=$end_id RETURN path', 
                 start_id=start_id, end_id=end_id).single()
 
     if result is None:
