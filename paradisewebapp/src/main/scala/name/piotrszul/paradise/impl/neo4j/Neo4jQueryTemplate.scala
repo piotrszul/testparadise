@@ -1,5 +1,7 @@
 package name.piotrszul.paradise.impl.neo4j
 
-class Neo4jQueryTemplate() {
-  def evaluate(cypherQuery:String, params:Any):Any = ???  
+import org.neo4j.driver.v1.StatementResult
+
+trait Neo4jQueryTemplate {
+  def querySingle[T](cypherQuery: String, params: Any, resultMapper: StatementResult=>T): T  
 }

@@ -3,7 +3,7 @@ target
 tmp
 *.pyc
 .cache-main
-.cache-test
+.cache-tests
 .classpath
 .project
 .settings

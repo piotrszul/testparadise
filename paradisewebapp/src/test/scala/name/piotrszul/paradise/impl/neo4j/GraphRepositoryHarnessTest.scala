@@ -10,15 +10,15 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory
 import java.io.File
 import org.neo4j.graphdb.factory.GraphDatabaseSettings
 import org.neo4j.driver.v1.GraphDatabase
+import org.neo4j.harness.TestServerBuilders
 
 
-class GraphRepositoryTest {
+class GraphRepositoryHarnsessTest {
   
   @Test
   def testSometghin() {
-    println(GraphRepositoryTest.graphDb)
-    GraphRepositoryTest.graphDb.execute("CREATE (:Place {name: 'Malmö', longitude: 12.995098, latitude: 55.611730})")
-    val driver = GraphDatabase.driver("bolt://localhost:7000")
+    println(GraphRepositoryHarnsessTest.graphDb)
+    val driver = GraphDatabase.driver(GraphRepositoryHarnsessTest.graphDb.boltURI())
     val session = driver.session()
     val result = session.run("MATCH (p) RETURN (p)")
     println(result)
@@ -28,14 +28,14 @@ class GraphRepositoryTest {
   
 }
 
-object GraphRepositoryTest {
+object GraphRepositoryHarnsessTest {
 
-  val bolt = GraphDatabaseSettings.boltConnector( "0" );
-  lazy val graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(new File("target"))
-                .setConfig( bolt.`type`, "BOLT" )
-                .setConfig( bolt.enabled, "true" )
-                .setConfig( bolt.address, "localhost:7000" )
-                .newGraphDatabase();
+  lazy val graphDb = TestServerBuilders
+            .newInProcessBuilder()
+            .withFixture("" // <5>
+                + " CREATE (:Place {name: 'Malmö', longitude: 12.995098, latitude: 55.611730})"
+            )
+            .newServer();
   @BeforeClass
   def setup() {
   //  
@@ -43,7 +43,7 @@ object GraphRepositoryTest {
   
   @AfterClass
   def tearDown() {
-      graphDb.shutdown()  
+      graphDb.close()  
   }
   
 }
