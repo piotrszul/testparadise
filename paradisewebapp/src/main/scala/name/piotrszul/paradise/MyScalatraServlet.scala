@@ -10,9 +10,12 @@ import org.json4s.jackson.Serialization
 import org.json4s.JsonAST.JObject
 import org.json4s._
 import org.json4s.JsonDSL._
-  
+import org.slf4j.{Logger, LoggerFactory}
+
 class MyScalatraServlet extends ScalatraServlet with JacksonJsonSupport with UrlGeneratorSupport {
 
+  val logger =  LoggerFactory.getLogger(getClass)
+  
   protected implicit lazy val jsonFormats: Formats = Serialization.formats(ShortTypeHints(List(classOf[Entity])))
   
   // Before every action runs, set the content type to be in JSON format.
@@ -25,6 +28,7 @@ class MyScalatraServlet extends ScalatraServlet with JacksonJsonSupport with Url
   }
 
   val getNode = get("/node/:id") {
+    logger.info("Getting node withs some id {}", 10)
     Ok(Entity(10,"Piotr"))
   }
 
