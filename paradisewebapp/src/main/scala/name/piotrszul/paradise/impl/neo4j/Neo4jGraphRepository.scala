@@ -7,9 +7,7 @@ import org.neo4j.driver.v1.StatementResult
 
 
 class Neo4jGraphRepository(queryTemplate:Neo4jQueryTemplate) extends GraphRepository {
-  def getEntity(id: Int): Entity = {
-    ???
-  }
+  def getEntity(id: Int): Option[Entity] = None
 
   def getShortedPath(startId: Int, endId: Int): Path = {
     queryTemplate.querySingle[Path]("", Map("start_id" -> startId), ResultToPath)

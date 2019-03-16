@@ -11,9 +11,14 @@ import org.json4s.JsonAST.JObject
 import org.json4s._
 import org.json4s.JsonDSL._
 import org.slf4j.{Logger, LoggerFactory}
+import name.piotrszul.paradise.domain.GraphRepository
 
-class MyScalatraServlet extends ScalatraServlet with JacksonJsonSupport with UrlGeneratorSupport {
+class MyScalatraServlet(graphRepository:GraphRepository) extends ScalatraServlet with JacksonJsonSupport with UrlGeneratorSupport {
 
+  def this() {
+    this(null)
+  }
+  
   val logger =  LoggerFactory.getLogger(getClass)
   
   protected implicit lazy val jsonFormats: Formats = Serialization.formats(ShortTypeHints(List(classOf[Entity])))
@@ -28,8 +33,12 @@ class MyScalatraServlet extends ScalatraServlet with JacksonJsonSupport with Url
   }
 
   val getNode = get("/node/:id") {
-    logger.info("Getting node withs some id {}", 10)
-    Ok(Entity(10,"Piotr"))
+    logger.info("Getting node withs some id {}", params)
+    val id = params("id").toInt
+    logger.info("Inside id={}, repo={}", id, graphRepository)
+    val result = graphRepository.getEntity(id);
+    logger.info("Result={}", result)
+    result.getOrElse(NotFound("Resource not found"))
   }
 
   protected override def transformResponseBody(body: JValue): JValue = {
